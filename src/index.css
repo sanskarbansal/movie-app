@@ -1,13 +1,184 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+* {
+    box-sizing: border-box;
+}
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input,
+input:focus {
+    outline: none;
+    border: none;
+    padding: 0.2rem 0.5rem 0.2rem 1rem;
+}
+
+/* Nav Bar Styling */
+.nav {
+    display: flex;
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 50px;
+}
+.nav > .search-container {
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.nav > .search-container > input,
+.nav > .search-container > button {
+    height: 100%;
+    width: 200px;
+}
+
+nav > .search-container > button,
+.movie-card,
+.favourite-btn,
+.list,
+.left img {
+    border-radius: 4px;
+}
+
+.App button {
+    cursor: pointer;
+}
+
+#search-btn {
+    border: 1px solid white;
+    background-color: transparent;
+    width: 100px;
+    font-weight: bolder;
+    color: rgb(250, 250, 250);
+    transition: all 0.3s ease-in-out;
+}
+#search-btn:hover {
+    background-color: white;
+    color: black;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 0;
+    background-color: rgb(231 230 230 / 82%);
+}
+.tabs > div {
+    display: inline-block;
+}
+.tab {
+    cursor: pointer;
+    border: 1px solid grey;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease-in-out;
+}
+.tab:hover {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+.list {
+    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    justify-items: center;
+    align-items: center;
+    /* border: 1px solid black; */
+}
+
+/* Movie Card Styling */
+.movie-card {
+    display: inline-grid;
+    grid-template-columns: repeat(12, 1fr);
+    width: 90%;
+    /* border: 1px solid grey; */
+    background-color: white;
+    box-shadow: 2px 3px 4px 0px #bbbaba82, -1px -3px 4px 0px #bdbdbd42;
+}
+.left {
+    grid-column: 1 / span 3;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.left img {
+    width: 100%;
+    vertical-align: bottom;
+}
+.right {
+    grid-column: 4 / -1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    justify-content: space-evenly;
+}
+.right > .title {
+    font-weight: bolder;
+    border-bottom: 1px solid grey;
+    padding-bottom: 0.3rem;
+}
+
+.favourite-btn {
+    border: none;
+    padding: 0.5rem 0.8rem;
+    background-color: transparent;
+    border: 1px solid grey;
+    transition: all 0.3s;
+}
+.favourite-btn:hover {
+    background-color: rgb(53, 51, 51);
+    color: white;
+}
+.rating {
+    color: red;
+    font-weight: bolder;
+}
+
+/* Movie Card => Footer */
+
+.movie-card .footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+/* For Devices smaller than 400px */
+@media only screen and (max-width: 400px) {
+    .nav > .search-container > input {
+        width: 160px;
+    }
+    #search-btn {
+        width: 60px;
+    }
+}
+@media only screen and (max-width: 1024px) {
+    .list {
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 800px) {
+    .left {
+        grid-column: 1/-1;
+    }
+    .left img {
+        width: 100%;
+    }
+    .right {
+        grid-column: 1/-1;
+    }
 }
