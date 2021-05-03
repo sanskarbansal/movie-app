@@ -46,9 +46,6 @@ nav > .search-container > button,
 .left img {
     border-radius: 4px;
 }
-.search-container input {
-    /* border-radius: 4px 0 0 4px; */
-}
 
 .App button {
     cursor: pointer;
@@ -61,7 +58,6 @@ nav > .search-container > button,
     width: 100px;
     font-weight: bolder;
     transition: all 0.3s ease-in-out;
-    /* border-radius: 0 4px 4px 0; */
 }
 #search-btn:hover {
     background-color: transparent;
@@ -84,6 +80,7 @@ nav > .search-container > button,
     padding: 0.5rem 1rem;
     transition: all 0.1s ease-in-out;
     box-shadow: 1px 1px 1px black;
+    background-color: white;
 }
 .tab.active {
     z-index: 2;
@@ -115,7 +112,7 @@ nav > .search-container > button,
     min-width: 80%;
     max-width: 90%;
     min-height: 200px;
-    background-color: transparent;
+    background-color: white;
     z-index: 2;
     overflow: hidden;
     box-shadow: 2px 3px 4px 0px #bbbaba82, -1px -3px 4px 0px #bdbdbd42;
@@ -236,11 +233,9 @@ nav > .search-container > button,
 /* Basic Lazy Loading  Animation  */
 @keyframes lazyloding {
     0% {
-        transform: scale(5) translate(-50%, -50%);
-        /* background: linear-gradient(90deg, rgba(182, 182, 193, 1) 0%, rgba(221, 221, 230, 1) 35%, rgba(157, 230, 245, 1) 93%, rgba(0, 212, 255, 1) 100%); */
+        transform: scale(5) translate(-10%, -10%);
     }
     100% {
         transform: scale(10);
-        /* background: linear-gradient(60deg, rgba(157, 230, 245, 1) 9%, rgba(221, 221, 230, 1) 79%, rgba(182, 182, 193, 1) 100%, rgba(0, 212, 255, 1) 100%); */
     }
 }
