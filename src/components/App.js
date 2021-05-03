@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import data from "../data";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
+import { addMovies } from "../actions/index";
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -10,15 +12,21 @@ class App extends Component {
             this.forceUpdate();
         });
     }
+
+    isMovieFavourite = (movie) => {
+        const { favourites } = this.store.getState();
+        for (let m of favourites) {
+            if (m.imdbID === movie.imdbID) return true;
+        }
+        return false;
+    };
+
     componentDidMount() {
-        this.store.dispatch({
-            type: "ADD_MOVIES",
-            movies: data,
-        });
+        this.store.dispatch(addMovies(data));
     }
     render() {
-        const obj = this.props.store.getState();
-        console.log(obj);
+        const { list } = this.props.store.getState();
+        // console.log(favourites);
         return (
             <div className="App">
                 <Navbar />
@@ -28,8 +36,8 @@ class App extends Component {
                         <div className="tab">Favourites</div>
                     </div>
                     <div className="list">
-                        {obj.map((movie, index) => (
-                            <MovieCard movie={movie} key={`movie-${index}`} />
+                        {list.map((movie, index) => (
+                            <MovieCard movie={movie} key={`movie-${index}`} dispatch={this.store.dispatch} isFav={this.isMovieFavourite(movie)} />
                         ))}
                     </div>
                 </div>
