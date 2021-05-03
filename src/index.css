@@ -4,6 +4,7 @@ body {
         sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: rgb(231 230 230 / 82%);
 }
 * {
     box-sizing: border-box;
@@ -30,10 +31,7 @@ input:focus {
 }
 .nav > .search-container {
     height: 60%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    /* gap: 0.5rem; */
 }
 .nav > .search-container > input,
 .nav > .search-container > button {
@@ -48,6 +46,9 @@ nav > .search-container > button,
 .left img {
     border-radius: 4px;
 }
+.search-container input {
+    /* border-radius: 4px 0 0 4px; */
+}
 
 .App button {
     cursor: pointer;
@@ -55,15 +56,16 @@ nav > .search-container > button,
 
 #search-btn {
     border: 1px solid white;
-    background-color: transparent;
+    border-left: 1px solid black;
+    background-color: white;
     width: 100px;
     font-weight: bolder;
-    color: rgb(250, 250, 250);
     transition: all 0.3s ease-in-out;
+    /* border-radius: 0 4px 4px 0; */
 }
 #search-btn:hover {
-    background-color: white;
-    color: black;
+    background-color: transparent;
+    color: white;
 }
 
 .main {
@@ -73,18 +75,22 @@ nav > .search-container > button,
     align-items: center;
     gap: 1rem;
     padding: 2rem 0;
-    background-color: rgb(231 230 230 / 82%);
 }
-.tabs > div {
-    display: inline-block;
-    background-color: white;
-}
+
 .tab {
+    display: inline-block;
     border-radius: 2px;
     cursor: pointer;
-    border: 1px solid grey;
     padding: 0.5rem 1rem;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.1s ease-in-out;
+    box-shadow: 1px 1px 1px black;
+}
+.tab.active {
+    z-index: 2;
+    transform: scale(1.1);
+    color: white;
+    font-weight: bolder;
+    background-color: red;
 }
 .tab:hover {
     background-color: red;
@@ -103,13 +109,37 @@ nav > .search-container > button,
 
 /* Movie Card Styling */
 .movie-card {
+    position: relative;
     display: inline-grid;
     grid-template-columns: repeat(12, 1fr);
-    width: 90%;
-    /* border: 1px solid grey; */
-    background-color: white;
+    min-width: 80%;
+    max-width: 90%;
+    min-height: 200px;
+    background-color: transparent;
+    z-index: 2;
+    overflow: hidden;
     box-shadow: 2px 3px 4px 0px #bbbaba82, -1px -3px 4px 0px #bdbdbd42;
 }
+.movie-card * {
+    position: relative;
+    overflow: hidden;
+    min-height: 50px;
+}
+.lazyloader::before {
+    filter: blur(10px);
+    z-index: -1;
+    content: "";
+    position: absolute;
+    background-color: rgba(180, 180, 180, 0.651);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: lazyloding 1s ease infinite;
+    animation-fill-mode: both;
+    animation-fill-mode: forwards;
+    animation-direction: alternate;
+}
+
 .left {
     grid-column: 1 / span 3;
     width: 100%;
@@ -196,9 +226,21 @@ nav > .search-container > button,
         transform: scale(1);
     }
     50% {
-        transform: scale(2);
+        transform: scale(1.2);
     }
     100% {
         transform: scale(1);
+    }
+}
+
+/* Basic Lazy Loading  Animation  */
+@keyframes lazyloding {
+    0% {
+        transform: scale(5) translate(-50%, -50%);
+        /* background: linear-gradient(90deg, rgba(182, 182, 193, 1) 0%, rgba(221, 221, 230, 1) 35%, rgba(157, 230, 245, 1) 93%, rgba(0, 212, 255, 1) 100%); */
+    }
+    100% {
+        transform: scale(10);
+        /* background: linear-gradient(60deg, rgba(157, 230, 245, 1) 9%, rgba(221, 221, 230, 1) 79%, rgba(182, 182, 193, 1) 100%, rgba(0, 212, 255, 1) 100%); */
     }
 }

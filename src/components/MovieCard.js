@@ -11,7 +11,15 @@ export default class MovieCard extends Component {
     };
     render() {
         const { movie, isFav } = this.props;
-        return (
+        return !movie ? (
+            <div className="movie-card">
+                <div className="left lazyloader">{/* <img alt="movie-poster" /> */}</div>
+                <div className="right ">
+                    <div className="plot lazyloader"></div>
+                    <div className="footer lazyloader"></div>
+                </div>
+            </div>
+        ) : (
             <div className="movie-card">
                 <div className="left">
                     <img src={movie.Poster} alt="movie-poster" />
@@ -22,7 +30,7 @@ export default class MovieCard extends Component {
                     <div className="footer">
                         <div className="rating">{movie.imdbRating}</div>
                         <button className={`favourite-btn ${isFav ? "fav" : ""}`} onClick={() => this.toggleFav(movie)}>
-                            Favourite
+                            {isFav ? "Unfavourite" : "Favourite"}
                         </button>
                     </div>
                 </div>

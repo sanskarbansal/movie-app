@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import data from "../data";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
-import { addMovies } from "../actions/index";
+import { addMovies, setShow, setLoading } from "../actions/index";
 
 class App extends Component {
     constructor(props) {
@@ -20,26 +19,65 @@ class App extends Component {
         }
         return false;
     };
-
+    handleChangeTab = (val) => {
+        this.store.dispatch(setShow(val));
+    };
     componentDidMount() {
-        this.store.dispatch(addMovies(data));
+        const dispatch = this.store.dispatch;
+        const url = "http://www.omdbapi.com/?apikey=54543ec9&";
+        dispatch(setLoading(true));
+        fetch(url + "s=Batman&page=1&plot=short")
+            .then((data) => data.json())
+            .then((data) => {
+                const searchResult = data.Search;
+                let promises = [];
+                let movies = [];
+                for (let mov of searchResult) {
+                    promises.push(
+                        fetch(url + "i=" + mov.imdbID)
+                            .then((response) => response.json())
+                            .then((movie) => movies.push(movie))
+                            .catch((err) => console.log(err))
+                    );
+                }
+                Promise.all(promises).then(() => {
+                    dispatch(addMovies(movies));
+                    dispatch(setLoading(false));
+                });
+            });
     }
     render() {
-        const { list } = this.props.store.getState();
-        // console.log(favourites);
+        const { list, favourites, show_favourites, loading } = this.props.store.getState();
+        const displayList = show_favourites ? favourites : list;
         return (
             <div className="App">
                 <Navbar />
                 <div className="main">
                     <div className="tabs">
-                        <div className="tab">Movies</div>
-                        <div className="tab">Favourites</div>
+                        <div className={`tab ${show_favourites ? "" : "active"}`} onClick={() => this.handleChangeTab(false)}>
+                            Movies
+                        </div>
+                        <div className={`tab ${show_favourites ? "active" : ""}`} onClick={() => this.handleChangeTab(true)}>
+                            Favourites
+                        </div>
                     </div>
-                    <div className="list">
-                        {list.map((movie, index) => (
-                            <MovieCard movie={movie} key={`movie-${index}`} dispatch={this.store.dispatch} isFav={this.isMovieFavourite(movie)} />
-                        ))}
-                    </div>
+                    {loading ? (
+                        [
+                            <MovieCard dispatch={this.store.dispatch} key={1} />,
+                            <MovieCard dispatch={this.store.dispatch} key={2} />,
+                            <MovieCard dispatch={this.store.dispatch} key={3} />,
+                        ]
+                    ) : (
+                        <div className="list">
+                            {displayList.length ? (
+                                displayList.map((movie, index) => (
+                                    <MovieCard movie={movie} key={`movie-${index}`} dispatch={this.store.dispatch} isFav={this.isMovieFavourite(movie)} />
+                                ))
+                            ) : (
+                                <div> List is empty. </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         );
