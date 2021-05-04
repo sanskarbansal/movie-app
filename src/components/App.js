@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
-import { addMovies, setShow, setLoading } from "../actions/index";
+import { addMovies, setShow, setLoading, clearResult } from "../actions/index";
 
 class App extends Component {
     constructor(props) {
@@ -13,7 +13,9 @@ class App extends Component {
     }
 
     isMovieFavourite = (movie) => {
-        const { favourites } = this.store.getState();
+        const {
+            main: { favourites },
+        } = this.store.getState();
         for (let m of favourites) {
             if (m.imdbID === movie.imdbID) return true;
         }
@@ -45,13 +47,19 @@ class App extends Component {
                     dispatch(setLoading(false));
                 });
             });
+        window.addEventListener("click", (event) => {
+            dispatch(clearResult());
+        });
     }
     render() {
-        const { list, favourites, show_favourites, loading } = this.props.store.getState();
+        const {
+            main: { list, favourites, show_favourites, loading },
+            search,
+        } = this.props.store.getState();
         const displayList = show_favourites ? favourites : list;
         return (
             <div className="App">
-                <Navbar />
+                <Navbar dispatch={this.store.dispatch} {...search} />
                 <div className="main">
                     <div className="tabs">
                         <div className={`tab ${show_favourites ? "" : "active"}`} onClick={() => this.handleChangeTab(false)}>
@@ -69,7 +77,7 @@ class App extends Component {
                         ]
                     ) : (
                         <div className="list">
-                            {displayList.length ? (
+                            {displayList && displayList.length ? (
                                 displayList.map((movie, index) => (
                                     <MovieCard movie={movie} key={`movie-${index}`} dispatch={this.store.dispatch} isFav={this.isMovieFavourite(movie)} />
                                 ))

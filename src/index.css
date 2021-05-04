@@ -20,7 +20,7 @@ input:focus {
     padding: 0.2rem 0.5rem 0.2rem 1rem;
 }
 
-/* Nav Bar Styling */
+/*--------------------------- Nav Bar Styling ------------------------*/
 .nav {
     display: flex;
     background-color: black;
@@ -29,17 +29,23 @@ input:focus {
     flex-wrap: wrap;
     height: 50px;
 }
-.nav > .search-container {
+.search-container {
     height: 60%;
-    /* gap: 0.5rem; */
-}
-.nav > .search-container > input,
-.nav > .search-container > button {
-    height: 100%;
-    width: 200px;
+    width: 380px;
 }
 
-nav > .search-container > button,
+.search-form {
+    width: 100%;
+    height: 100%;
+}
+
+.search-form > input,
+.search-form > button {
+    display: inline-block;
+    height: 100%;
+    width: 280px;
+}
+
 .movie-card,
 .favourite-btn,
 .list,
@@ -51,6 +57,7 @@ nav > .search-container > button,
     cursor: pointer;
 }
 
+/******************** Navbar Search Styling  *********************/
 #search-btn {
     border: 1px solid white;
     border-left: 1px solid black;
@@ -63,7 +70,37 @@ nav > .search-container > button,
     background-color: transparent;
     color: white;
 }
+.searched--movies {
+    background-color: white;
+    box-shadow: 1px 1px 1px 1px white;
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
 
+/********************* Searched Movie Card Styling **********************/
+.movie-card.searched-card {
+    min-width: 100%;
+    font-size: 0.8rem;
+}
+.movie-card.searched-card .left {
+    grid-column: 1 / span 4;
+}
+.movie-card.searched-card .right {
+    grid-column: 5/-1;
+}
+.movie-card.searched-card .left img {
+    height: 100%;
+    object-fit: cover;
+}
+.searched-card .favourite-btn {
+    min-height: 20px;
+}
+
+/*------------------- Main APP Styling -----------------------------*/
 .main {
     display: flex;
     flex-direction: column;
@@ -72,7 +109,7 @@ nav > .search-container > button,
     gap: 1rem;
     padding: 2rem 0;
 }
-
+/******************Tab Styling*******************/
 .tab {
     display: inline-block;
     border-radius: 2px;
@@ -82,6 +119,8 @@ nav > .search-container > button,
     box-shadow: 1px 1px 1px black;
     background-color: white;
 }
+
+/*************Active Tab Styling*****************/
 .tab.active {
     z-index: 2;
     transform: scale(1.1);
@@ -89,10 +128,13 @@ nav > .search-container > button,
     font-weight: bolder;
     background-color: red;
 }
+/*********** Hover Tab Styling *******************/
 .tab:hover {
     background-color: red;
     color: white;
 }
+
+/************** Movies List Container Styling *********************/
 
 .list {
     width: 80%;
@@ -104,37 +146,30 @@ nav > .search-container > button,
     /* border: 1px solid black; */
 }
 
-/* Movie Card Styling */
+/************************ Movie Card Styling *************************/
 .movie-card {
     position: relative;
     display: inline-grid;
     grid-template-columns: repeat(12, 1fr);
     min-width: 80%;
     max-width: 90%;
-    min-height: 200px;
     background-color: white;
     z-index: 2;
     overflow: hidden;
     box-shadow: 2px 3px 4px 0px #bbbaba82, -1px -3px 4px 0px #bdbdbd42;
 }
+
+/****************** Everything inside movie card poistion relative and overflow hidden for lazy loader ***********************/
 .movie-card * {
     position: relative;
     overflow: hidden;
-    min-height: 50px;
 }
-.lazyloader::before {
-    filter: blur(10px);
-    z-index: -1;
-    content: "";
-    position: absolute;
-    background-color: rgba(180, 180, 180, 0.651);
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    animation: lazyloding 1s ease infinite;
-    animation-fill-mode: both;
-    animation-fill-mode: forwards;
-    animation-direction: alternate;
+
+.m-h {
+    min-height: 200px;
+}
+.m-h * {
+    min-height: 50px;
 }
 
 .left {
@@ -192,14 +227,34 @@ nav > .search-container > button,
     flex-direction: column;
     gap: 0.8rem;
 }
+/*************Movie Card Syling End ******************/
+
+/********************* Lazy Loader*********************/
+.lazyloader::before {
+    filter: blur(10px);
+    z-index: -1;
+    content: "";
+    position: absolute;
+    background-color: rgba(180, 180, 180, 0.651);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: lazyloding 1s ease infinite;
+    animation-fill-mode: both;
+    animation-fill-mode: forwards;
+    animation-direction: alternate;
+}
 
 /* For Devices smaller than 400px */
 @media only screen and (max-width: 400px) {
-    .nav > .search-container > input {
-        width: 160px;
+    .search-container {
+        width: 320px;
+    }
+    .search-form input {
+        width: 80%;
     }
     #search-btn {
-        width: 60px;
+        width: 20%;
     }
 }
 @media only screen and (max-width: 1024px) {

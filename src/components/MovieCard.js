@@ -10,17 +10,17 @@ export default class MovieCard extends Component {
         this.props.dispatch(addFavourite(movie));
     };
     render() {
-        const { movie, isFav } = this.props;
+        const { movie, isFav, searched } = this.props;
         return !movie ? (
-            <div className="movie-card">
-                <div className="left lazyloader">{/* <img alt="movie-poster" /> */}</div>
+            <div className="movie-card m-h">
+                <div className="left lazyloader"></div>
                 <div className="right ">
                     <div className="plot lazyloader"></div>
                     <div className="footer lazyloader"></div>
                 </div>
             </div>
         ) : (
-            <div className="movie-card">
+            <div className={`movie-card ${searched ? "searched-card" : "m-h"}`}>
                 <div className="left">
                     <img src={movie.Poster} alt="movie-poster" />
                 </div>

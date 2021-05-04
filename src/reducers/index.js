@@ -1,6 +1,15 @@
-import { ADD_MOVIES, ADD_FAVOURITE, REMOVE_FROM_FAVOURITES, SET_SHOW_FAVOURITES, ADD_MOVIE, SET_LOADING } from "../actions/index";
+import {
+    ADD_MOVIES,
+    ADD_FAVOURITE,
+    REMOVE_FROM_FAVOURITES,
+    SET_SHOW_FAVOURITES,
+    ADD_MOVIE,
+    SET_LOADING,
+    SET_SEARCH_RESULT,
+    CLEAR_SEARCH_RESULT,
+} from "../actions/index";
 
-const obj = {
+const mainReducerHelper = {
     [ADD_MOVIE]: (state, { movie }) => ({
         ...state,
         list: [...state.list, movie],
@@ -28,14 +37,38 @@ const obj = {
     },
 };
 
-const initialState = { list: [], favourites: [], show_favourites: false, loading: false };
-
-const rootReducer = (state = initialState, action) => {
-    if (!obj[action.type]) {
-        return state;
-    }
-    return obj[action.type](state, action);
+const initialState = {
+    main: { list: [], favourites: [], show_favourites: false, loading: false },
+    search: { show_search: false, results: [] },
 };
+
+const mainReducer = (state = initialState.main, action) => {
+    if (mainReducerHelper[action.type]) return mainReducerHelper[action.type](state, action);
+    return state;
+};
+const searchReducer = (state = initialState.search, action) => {
+    switch (action.type) {
+        case SET_SEARCH_RESULT:
+            return {
+                ...state,
+                show_search: true,
+                results: [...state.results, action.movie],
+            };
+        case CLEAR_SEARCH_RESULT:
+            return {
+                ...state,
+                show_search: false,
+                results: [],
+            };
+        default:
+            return state;
+    }
+};
+
+const rootReducer = (state = initialState, action) => ({
+    main: mainReducer(state.main, action),
+    search: searchReducer(state.search, action),
+});
 
 export const thunk = ({ dispatch, getState }) => (next) => (action) => {
     if (typeof action == "function") {
