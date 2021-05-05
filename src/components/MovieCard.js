@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { addFavourite, removeFavourite } from "../actions/index";
+import { addFavourite, addMovie, clearResult, removeFavourite } from "../actions/index";
 
 export default class MovieCard extends Component {
     toggleFav = (movie) => {
@@ -9,8 +9,14 @@ export default class MovieCard extends Component {
         }
         this.props.dispatch(addFavourite(movie));
     };
+
+    handleAddMovies = () => {
+        this.props.dispatch(addMovie(this.props.movie));
+        this.props.dispatch(clearResult());
+    };
     render() {
         const { movie, isFav, searched } = this.props;
+        // console.log(this.props);
         return !movie ? (
             <div className="movie-card m-h">
                 <div className="left lazyloader"></div>
@@ -29,9 +35,15 @@ export default class MovieCard extends Component {
                     <div className="plot">{movie.Plot}</div>
                     <div className="footer">
                         <div className="rating">{movie.imdbRating}</div>
-                        <button className={`favourite-btn ${isFav ? "fav" : ""}`} onClick={() => this.toggleFav(movie)}>
-                            {isFav ? "Unfavourite" : "Favourite"}
-                        </button>
+                        {searched ? (
+                            <button className="favourite-btn" onClick={this.handleAddMovies}>
+                                ADD TO MOVIES
+                            </button>
+                        ) : (
+                            <button className={`favourite-btn ${isFav ? "fav" : ""}`} onClick={() => this.toggleFav(movie)}>
+                                {isFav ? "Unfavourite" : "Favourite"}
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

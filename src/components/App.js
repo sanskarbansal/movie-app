@@ -2,30 +2,20 @@ import React, { Component } from "react";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
 import { addMovies, setShow, setLoading, clearResult } from "../actions/index";
-
+import { connect } from "./connect";
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.store = this.props.store;
-        this.store.subscribe(() => {
-            this.forceUpdate();
-        });
-    }
-
     isMovieFavourite = (movie) => {
-        const {
-            main: { favourites },
-        } = this.store.getState();
+        const { favourites } = this.props.movies;
         for (let m of favourites) {
             if (m.imdbID === movie.imdbID) return true;
         }
         return false;
     };
     handleChangeTab = (val) => {
-        this.store.dispatch(setShow(val));
+        this.props.dispatch(setShow(val));
     };
     componentDidMount() {
-        const dispatch = this.store.dispatch;
+        const dispatch = this.props.dispatch;
         const url = "http://www.omdbapi.com/?apikey=54543ec9&";
         dispatch(setLoading(true));
         fetch(url + "s=Batman&page=1&plot=short")
@@ -53,13 +43,13 @@ class App extends Component {
     }
     render() {
         const {
-            main: { list, favourites, show_favourites, loading },
+            movies: { list, favourites, show_favourites, loading },
             search,
-        } = this.props.store.getState();
+        } = this.props;
         const displayList = show_favourites ? favourites : list;
         return (
             <div className="App">
-                <Navbar dispatch={this.store.dispatch} {...search} />
+                <Navbar dispatch={this.props.dispatch} {...search} />
                 <div className="main">
                     <div className="tabs">
                         <div className={`tab ${show_favourites ? "" : "active"}`} onClick={() => this.handleChangeTab(false)}>
@@ -71,16 +61,18 @@ class App extends Component {
                     </div>
                     {loading ? (
                         [
-                            <MovieCard dispatch={this.store.dispatch} key={1} />,
-                            <MovieCard dispatch={this.store.dispatch} key={2} />,
-                            <MovieCard dispatch={this.store.dispatch} key={3} />,
+                            <MovieCard dispatch={this.props.dispatch} key={1} />,
+                            <MovieCard dispatch={this.props.dispatch} key={2} />,
+                            <MovieCard dispatch={this.props.dispatch} key={3} />,
                         ]
                     ) : (
                         <div className="list">
                             {displayList && displayList.length ? (
-                                displayList.map((movie, index) => (
-                                    <MovieCard movie={movie} key={`movie-${index}`} dispatch={this.store.dispatch} isFav={this.isMovieFavourite(movie)} />
-                                ))
+                                displayList.map((movie, index) => {
+                                    return (
+                                        <MovieCard movie={movie} key={`movie-${index}`} dispatch={this.props.dispatch} isFav={this.isMovieFavourite(movie)} />
+                                    );
+                                })
                             ) : (
                                 <div> List is empty. </div>
                             )}
@@ -92,4 +84,9 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    movies: state.main,
+    search: state.search,
+});
+
+export default connect(mapStateToProps)(App);

@@ -12,7 +12,7 @@ import {
 const mainReducerHelper = {
     [ADD_MOVIE]: (state, { movie }) => ({
         ...state,
-        list: [...state.list, movie],
+        list: [movie, ...state.list],
     }),
     [ADD_MOVIES]: (state, { movies }) => ({ ...state, list: movies }),
     [ADD_FAVOURITE]: (state, { movie }) => {
@@ -25,10 +25,12 @@ const mainReducerHelper = {
             favourites: state.favourites.filter((m) => m.imdbID !== movie.imdbID),
         };
     },
-    [SET_LOADING]: (state, { val }) => ({
-        ...state,
-        loading: val,
-    }),
+    [SET_LOADING]: (state, { val }) => {
+        return {
+            ...state,
+            loading: val,
+        };
+    },
     [SET_SHOW_FAVOURITES]: (state, { val }) => {
         return {
             ...state,
