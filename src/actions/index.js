@@ -6,11 +6,20 @@ export const ADD_MOVIE = "ADD_MOVIE";
 export const SET_LOADING = "SET_LOADING";
 export const SET_SEARCH_RESULT = "SET_SEARCH_RESULT";
 export const CLEAR_SEARCH_RESULT = "CLEAR_SEARCH_RESULT";
+const url = "http://www.omdbapi.com/?apikey=54543ec9&";
 
-export const addMovie = (movie) => ({
+export const addMovieHelper = (movie) => ({
     type: ADD_MOVIE,
     movie,
 });
+
+export const addMovie = (movie) => (dispatch) => {
+    if (movie.Plot) return dispatch(addMovieHelper(movie));
+    fetch(`${url}i=${movie.imdbID}`)
+        .then((response) => response.json())
+        .then((data) => dispatch(addMovieHelper(data)));
+};
+
 export const setLoading = (val) => ({
     type: SET_LOADING,
     val,
@@ -44,11 +53,10 @@ export const addResult = (movie) => ({
 });
 
 export const searchHandler = (movieName) => (dispatch) => {
-    const url = `http://www.omdbapi.com/?apikey=54543ec9&t=${movieName}`;
-    fetch(url)
+    fetch(`${url}s=${movieName}`)
         .then((response) => response.json())
         .then((data) => {
             if (data.Error) return alert("No such movie was found!");
-            dispatch({ type: SET_SEARCH_RESULT, movie: data });
+            dispatch({ type: SET_SEARCH_RESULT, movies: data });
         });
 };

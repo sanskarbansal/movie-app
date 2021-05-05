@@ -54,7 +54,7 @@ const searchReducer = (state = initialState.search, action) => {
             return {
                 ...state,
                 show_search: true,
-                results: [...state.results, action.movie],
+                results: [...action.movies.Search],
             };
         case CLEAR_SEARCH_RESULT:
             return {

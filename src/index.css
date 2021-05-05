@@ -37,6 +37,7 @@ input:focus {
 .search-form {
     width: 100%;
     height: 100%;
+    border-bottom: 4px solid black;
 }
 
 .search-form > input,
@@ -72,19 +73,18 @@ input:focus {
 }
 .searched--movies {
     background-color: white;
-    box-shadow: 1px 1px 1px 1px white;
+    box-shadow: 0px 0px 6px 1px rgb(160 160 160 / 48%), 0px 1px 3px 1px #a4a4a496;
     position: relative;
     z-index: 10;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
 }
 
 /********************* Searched Movie Card Styling **********************/
 .movie-card.searched-card {
     min-width: 100%;
     font-size: 0.8rem;
+    border-radius: 0;
 }
 .movie-card.searched-card .left {
     grid-column: 1 / span 4;
@@ -95,6 +95,7 @@ input:focus {
 .movie-card.searched-card .left img {
     height: 100%;
     object-fit: cover;
+    border-radius: 0;
 }
 .searched-card .favourite-btn {
     min-height: 20px;
@@ -252,6 +253,7 @@ input:focus {
     }
     .search-form input {
         width: 80%;
+        z-index: 120;
     }
     #search-btn {
         width: 20%;
